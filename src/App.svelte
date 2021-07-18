@@ -59,8 +59,14 @@
 	</div>
 
 	<div class="review-container">
-		<span class="big-quotation-mark">"</span>
+		<span class="big-quotation-mark">“</span>
 		<span class="review-body">{ @html getRandomReview(correct) }</span>
+	</div>
+
+	<div class="actions">
+		<a href="https://github.com/aquelemiguel/its-ok-i-guess">
+			<img width="35px" src="icons/github.png" alt="GitHub logo" />
+		</a>
 	</div>
 </main>
 
@@ -82,7 +88,9 @@
 
 	h4 {
 		font-weight: normal;
+		margin-top: 0.5em;
 		margin-bottom: 4em;
+		color: #ffffff4f;
 	}
 
 	.score-container {
@@ -96,20 +104,23 @@
 		justify-content: center;
 		width: 75px;
 		height: 75px;
-		background: #ffffff0f;
+		background: whitesmoke;
 		border-radius: 50%;
 		font-size: 32px;
+		mix-blend-mode: screen;
+		color: black;
 	}
 
 	.choice-container {
 		display: flex;
 		justify-content: space-around;
-		margin: 1em 0;
+		margin: 1.5em 0 1em 0;
 	}
 
 	.choice {
 		display: flex;
 		flex-direction: column;
+		font-family: '';
 		width: 400px;
 		height: 225px;
 		background: #ffffff0f;
@@ -139,6 +150,7 @@
 
 	.choice > span {
 		display: flex;
+		font-family: 'Motiva Sans Bold';
 		align-items: center;
 		justify-content: center;
 		flex-grow: 1;
@@ -149,18 +161,28 @@
 		flex-direction: column;
 		text-align: left;
 		width: 100%;
-		font-family: 'Motiva Sans Italic';
 		height: 200px;
 	}
 
 	.big-quotation-mark {
-		font-size: 128px;
+		font-size: 108px;
 		height: 40px;
 		color: #ffffff49;
 	}
 
 	.review-body {
-		margin: 0 0 2.5em 2.5em;
-		font-size: 28px;
+		font-family: 'Motiva Sans Bold';
+		margin: 0 15em 2.5em 2.5em;
+		font-size: 24px;
+	}
+
+	.actions {
+		display: flex;
+		align-items: center;
+		justify-content: flex-end;
+	}
+
+	.actions img {
+		filter: opacity(50%);
 	}
 </style>

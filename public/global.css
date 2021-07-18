@@ -4,6 +4,16 @@
 }
 
 @font-face {
+	font-family: 'Motiva Sans Light';
+	src: url('./fonts/motiva-sans-light-webfont.woff');
+}
+
+@font-face {
+	font-family: 'Motiva Sans Bold';
+	src: url('./fonts/motiva-sans-bold-webfont.woff');
+}
+
+@font-face {
 	font-family: 'Motiva Sans Italic';
 	src: url('./fonts/motiva-sans-regular-italic-webfont.woff');
 }
@@ -20,7 +30,7 @@ body {
 	margin: 0;
 	padding: 8px;
 	box-sizing: border-box;
-	font-family: 'Motiva Sans', sans-serif;
+	font-family: 'Motiva Sans Bold', sans-serif;
 }
 
 a {
