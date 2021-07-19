@@ -20,7 +20,13 @@
 		return _.sample(app.reviews);
 	}
 
+	const getGuessClass = (app: App): string => {
+		return app.appid === correct.appid ? 'correct' : 'incorrect';
+	}
+
 	const onGuess = (guess: App) => {
+		hasGuessed = true;
+
 		if (guess.appid === correct.appid) {
 			score++;
 			new Audio('sfx/correct.mp3').play();
@@ -30,13 +36,17 @@
 			new Audio('sfx/wrong.mp3').play();
 		}
 
-		apps = getRandomApps(3);
-		correct = _.sample(apps);
+		setTimeout(() => {
+			apps = getRandomApps(3);
+			correct = _.sample(apps);
+			hasGuessed = false;
+		}, 2000);	
 	}
 
 	let score = 0;
 	let apps: App[] = getRandomApps(3);
 	let correct: App = _.sample(apps);
+	let hasGuessed = false;
 </script>
 
 <main>
@@ -51,7 +61,7 @@
 
 	<div class="choice-container">
 		{#each apps as app}
-			<div class="choice" on:click={() => onGuess(app)}>
+			<div class="choice {hasGuessed && getGuessClass(app)}"on:click={() => onGuess(app)} style="{hasGuessed ? 'pointer-events:none;' : ''}">
 				<img src="banners/{app.appid}_header.jpg" alt="" />
 				<span>{ app.name }</span>
 			</div>
@@ -122,12 +132,13 @@
 		flex-direction: column;
 		font-family: '';
 		width: 400px;
-		height: 225px;
+		height: 250px;
 		background: #ffffff0f;
 		border-radius: 10px;
 		overflow: hidden;
 		transition: all .2s ease;
 		cursor: pointer;
+		box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
 	}
 
 	.choice:first-child {
@@ -138,9 +149,15 @@
 		margin-left: 1em;
 	}
 
-	.choice:hover {
+	.choice:hover, .choice.correct {
+		transition: all .5s ease;
 		background: whitesmoke;
 		color: #1f2126;
+	}
+
+	.choice.incorrect {
+		transition: all .5s ease;
+		filter: opacity(25%);
 	}
 
 	.choice > img {

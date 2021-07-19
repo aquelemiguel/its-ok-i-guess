@@ -18,8 +18,8 @@ class Game:
 driver = webdriver.Chrome(ChromeDriverManager().install())
 driver.get('https://steamdb.info/graph/')
 
-driver.find_element_by_xpath("//select[@name='table-apps_length']/option[text()='25']").click()
-appids = [app.get_attribute('data-appid') for app in driver.find_elements_by_class_name('app')]
+driver.find_element_by_xpath("//select[@name='table-apps_length']/option[text()='1K']").click()
+appids = [app.get_attribute('data-appid') for app in driver.find_elements_by_class_name('app')][:500]
 
 db = []
 
