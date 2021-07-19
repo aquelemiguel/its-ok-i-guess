@@ -74,8 +74,14 @@
 	</div>
 
 	<div class="actions">
-		<a href="https://github.com/aquelemiguel/its-ok-i-guess">
-			<img width="35px" src="icons/github.png" alt="GitHub logo" />
+		<a href="https://paypal.com/paypalme/aquelemiguel/1" target="_blank">
+			<img src="icons/paypal.png" alt="PayPal logo" />
+		</a>
+		<a href="https://ko-fi/aquelemiguel" target="_blank">
+			<img src="icons/kofi.png" alt="Ko-Fi logo" />
+		</a>
+		<a href="https://github.com/aquelemiguel/its-ok-i-guess" target="_blank">
+			<img src="icons/github.png" alt="GitHub logo" />
 		</a>
 	</div>
 </main>
@@ -91,7 +97,7 @@
 	}
 
 	h1 {
-		font-size: 5em;
+		font-size: 4em;
 		font-weight: 900;
 		margin: 1.25em 0 0 0;
 	}
@@ -124,7 +130,7 @@
 	.choice-container {
 		display: flex;
 		justify-content: space-around;
-		margin: 1.5em 0 1em 0;
+		margin: 2em 0 1em 0;
 	}
 
 	.choice {
@@ -197,9 +203,18 @@
 		display: flex;
 		align-items: center;
 		justify-content: flex-end;
+		margin-bottom: 1em;
 	}
 
 	.actions img {
+		width: 40px;
+		padding-left: 0.5em;
 		filter: opacity(50%);
+		transition: all .5s ease;
+	}
+
+	.actions img:hover {
+		filter: opacity(80%);
+		transition: all .2s ease;
 	}
 </style>

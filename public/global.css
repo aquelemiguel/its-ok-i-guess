@@ -22,7 +22,28 @@ html, body {
 	position: relative;
 	width: 100%;
 	height: 100%;
-	background: linear-gradient(137.42deg, #1A75FF 0%, #6A5DF8 33%, #C957E6 100%);
+	background: linear-gradient(-45deg, #1a75ff, #6a5df8, #c957e6);
+    background-size: 200% 200%;
+
+    -webkit-animation: Animation 60s ease infinite;
+    -moz-animation: Animation 60s ease infinite;
+    animation: Animation 60s ease infinite;
+}
+
+@-webkit-keyframes Animation {
+    0%{background-position:0% 0%}
+    50%{background-position:100% 100%}
+    100%{background-position:0% 0%}
+}
+@-moz-keyframes Animation {
+    0%{background-position:0% 0%}
+    50%{background-position:100% 100%}
+    100%{background-position:0% 0%}
+}
+@keyframes Animation { 
+    0%{background-position:0% 0%}
+    50%{background-position:100% 100%}
+    100%{background-position:0% 0%}
 }
 
 body {
