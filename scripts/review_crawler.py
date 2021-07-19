@@ -14,6 +14,7 @@ class Review:
     body: str = ''
     recommended: bool = True
     play_time: float = -1
+    funny_votes: int = -1
 
 @dataclass
 class Game:
@@ -89,6 +90,17 @@ for i, appid in enumerate(appids):
 
     for elem in driver.find_elements_by_class_name('apphub_UserReviewCardContent'):
         review = Review()
+
+        # Filter out reviews that less than 50 people thought were funny
+        try:
+            funny_votes = elem.find_element_by_class_name('found_helpful').text
+            review.funny_votes = int(funny_votes.split('\n')[0].split(' ')[0].replace(',', ''))
+
+            if review.funny_votes < 100:
+                continue
+        except (NoSuchElementException, ValueError):
+            continue
+
         body = elem.find_element_by_css_selector('.apphub_CardTextContent').text
 
         if len(body) < 280:
@@ -111,7 +123,7 @@ for i, appid in enumerate(appids):
         db.append(dataclasses.asdict(game))
 
     # Print progress to console
-    os.system('cls||clear')
+    # os.system('cls||clear')
     print(f'[{i+1}/{len(appids)}] {game.name} ({game.appid})')
 
 driver.close()
