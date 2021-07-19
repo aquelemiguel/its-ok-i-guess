@@ -195,7 +195,6 @@ import app from './main';
 		align-items: center;
 		justify-content: center;
 		flex-grow: 1;
-		height: 100%;
 	}
 
 	.review-container {
@@ -204,7 +203,7 @@ import app from './main';
 		grid-template-rows: 22px 1fr;
 		column-gap: 1.5em;
 		margin: 2em 0;
-		text-align: justify;
+		text-align: left;
 		width: 100%;
 		flex-grow: 1;
 	}
@@ -251,21 +250,54 @@ import app from './main';
 	}
 
 	.actions img:hover {
-		filter: opacity(80%);
+		filter: opacity(100%);
 		transition: all .2s ease;
 	}
 	
 	@media only screen and (max-width: 600px) {
 		h1 {
-			font-size: 36px;
+			font-size: 32px;
+			margin-top: 1em;
+		}
+
+		h4 {
+			font-size: 16px;
+			margin-bottom: 1em;
+		}
+
+		.score-bubble {
+			width: 50px;
+			height: 50px;
+			font-size: 24px;
 		}
 
 		.choice-container {
+			display: flex;
 			flex-direction: column;
+			margin: 0;
 		}
 
 		.choice {
+			width: auto;
 			margin: 1.5em auto 0 auto !important;
+			height: auto;
+		}
+
+		.choice > span {
+			height: 50px;
+		}
+
+		.review-body {
+			font-size: 16px;
+		}
+
+		.actions {
+			justify-content: center;
+			margin-bottom: 1em;
+		}
+
+		.actions img {
+			padding: 8px;
 		}
 	}
 </style>
