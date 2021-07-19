@@ -4,16 +4,22 @@ import requests
 import dataclasses
 from pathlib import Path
 from selenium import webdriver
+from selenium.webdriver.remote.webelement import WebElement
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.common.exceptions import NoSuchElementException
 from dataclasses import dataclass, field
 
 @dataclass
+class Review:
+    body: str = ''
+    recommended: bool = True
+    play_time: float = -1
+
+@dataclass
 class Game:
     appid: int = -1
     name: str = ''
-    reviews: list[str] = field(default_factory=list)
-
+    reviews: list[Review] = field(default_factory=list)
 
 driver = webdriver.Chrome(ChromeDriverManager().install())
 driver.get('https://steamdb.info/graph/')
@@ -79,12 +85,29 @@ for i, appid in enumerate(appids):
         while (el4[0]) el4[0].parentNode.removeChild(el4[0]);
     """)
 
-    reviews = [review.text for review in driver.find_elements_by_class_name('apphub_CardTextContent')]
+    reviews = []
 
-    # Only keep reviews that are tweet sized
-    game.reviews = [review for review in reviews if len(review) < 280]
+    for elem in driver.find_elements_by_class_name('apphub_UserReviewCardContent'):
+        review = Review()
+        body = elem.find_element_by_css_selector('.apphub_CardTextContent').text
 
-    if len(game.reviews) > 0:
+        if len(body) < 280:
+            review.body = body
+        else:
+            continue
+
+        review.recommended = elem.find_element_by_css_selector('.title').text == 'Recommended'
+
+        try:
+            play_time = float(elem.find_element_by_css_selector('.hours').text.split(' ')[0].replace(',', ''))
+            review.play_time = play_time
+        except NoSuchElementException:
+            review.play_time = 0
+
+        reviews.append(dataclasses.asdict(review))
+
+    if len(reviews) > 0:
+        game.reviews = reviews
         db.append(dataclasses.asdict(game))
 
     # Print progress to console

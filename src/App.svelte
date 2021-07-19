@@ -1,25 +1,37 @@
 <script lang="ts">
 	import * as _ from 'lodash';
+	import { onMount } from 'svelte';
 	import * as db from '../models/reviews.json';
+import app from './main';
 
 	type App = {
 		appid: number;
 		name: string;
-		reviews: string[];
+		reviews: Review[];
 	};
 
-	const getRandomApps = (n: number): App[] => {
-		return _.sampleSize(Object.values(db['default']), n);
+	type Review = {
+		body: string;
+		play_time: number;
+		recommended: boolean;
 	}
 
-	const getRandomReview = (app: App) : string => {
+	onMount(() => {
+		data = data.map(app => ({
+			...app,
+			reviews: app.reviews as Review[]
+		}));
+	})
+
+	const getRandomApps = (n: number): App[] => {
+		return _.sampleSize(data, n);
+	}
+
+	const getRandomReview = (app: App) : Review => {
 		// const regex = new RegExp(app.name, 'gi');
 		// const spoiler = [...Array(Math.floor(Math.random() * (20 - 10 + 1)) + 10)].map(x => '*').join('');
 		// return _.sample(app.reviews).replaceAll(regex, `<span class="spoiler">${spoiler}</span>`);
-		const asdf = _.sample(app.reviews);
-		console.log(asdf);
-
-		return asdf;
+		return _.sample(app.reviews);
 	}
 
 	const getGuessClass = (app: App): string => {
@@ -41,13 +53,16 @@
 		setTimeout(() => {
 			apps = getRandomApps(3);
 			correct = _.sample(apps);
+			review = _.sample(correct.reviews);
 			hasGuessed = false;
 		}, 2000);	
 	}
-
+	
 	let score = 0;
+	let data: App[] = db['default'];
 	let apps: App[] = getRandomApps(3);
 	let correct: App = _.sample(apps);
+	let review: Review = _.sample(correct.reviews);
 	let hasGuessed = false;
 </script>
 
@@ -69,15 +84,17 @@
 	</div>
 
 	<div class="review-container">
-		<span class="big-quotation-mark">“</span>
-		<span class="review-body">{ @html getRandomReview(correct) }</span>
+		<img class="thumb-icon" src="icons/{ review.recommended ? 'thumbs-up.png' : 'thumbs-down.png' }" alt="" />
+		<!-- <span class="big-quotation-mark">“</span> -->
+		<span class="play-time">{ review.play_time } hours on record</span>
+		<span class="review-body">{ review.body }</span>
 	</div>
 
 	<div class="actions">
 		<a href="https://github.com/aquelemiguel/its-ok-i-guess" target="_blank">
 			<img src="icons/github.png" alt="GitHub logo" />
 		</a>
-		<a href="https://ko-fi/aquelemiguel" target="_blank">
+		<a href="https://ko-fi.com/aquelemiguel" target="_blank">
 			<img src="icons/kofi.png" alt="Ko-Fi logo" />
 		</a>
 		<a href="https://paypal.com/paypalme/aquelemiguel/1" target="_blank">
@@ -182,11 +199,21 @@
 	}
 
 	.review-container {
-		display: flex;
-		flex-direction: column;
-		text-align: left;
+		display: grid;
+		grid-template-columns: 64px 1fr;
+		grid-template-rows: 22px 1fr;
+		column-gap: 1.5em;
+		margin: 2em 0;
+		text-align: justify;
 		width: 100%;
 		flex-grow: 1;
+	}
+
+	.thumb-icon {
+		width: 64px;
+		filter: opacity(25%);
+		grid-row: 1/3;
+		grid-column: 1;
 	}
 
 	.big-quotation-mark {
@@ -195,9 +222,17 @@
 		color: #ffffff49;
 	}
 
+	.play-time {
+		color: #ffffff49;
+		grid-row: 1;
+		grid-column: 2;
+	}
+
 	.review-body {
 		font-family: 'Motiva Sans Bold';
-		margin: 0 0 2.5em 2.5em;
+		grid-row: 2;
+		grid-column: 2;
+		/* margin: 0 0 2.5em 2.5em; */
 		font-size: 24px;
 	}
 
