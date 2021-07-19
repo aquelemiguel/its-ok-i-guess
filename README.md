@@ -1,5 +1,5 @@
 # it's ok, i guess
-### Guess the game from which the Steam review came from!
+### Guess the game from the Steam review!
 
 Features reviews from the top 1000 most played games on Steam list on [SteamDB](https://steamdb.info/graph/) as of July 19th.  
 Reviews are scraped from the Steam Community reviews page for each app, sorted by funny and english language only.
