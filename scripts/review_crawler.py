@@ -19,7 +19,7 @@ driver = webdriver.Chrome(ChromeDriverManager().install())
 driver.get('https://steamdb.info/graph/')
 
 driver.find_element_by_xpath("//select[@name='table-apps_length']/option[text()='1K']").click()
-appids = [app.get_attribute('data-appid') for app in driver.find_elements_by_class_name('app')][:500]
+appids = [app.get_attribute('data-appid') for app in driver.find_elements_by_class_name('app')]
 
 db = []
 
@@ -29,10 +29,12 @@ for i, appid in enumerate(appids):
     game = Game()
 
     # Navigate to the reviews page, sorted by funny
-    driver.get(f'https://steamcommunity.com/app/{appid}/reviews/?browsefilter=funny')
+    reviews_page = f'https://steamcommunity.com/app/{appid}/reviews/?browsefilter=funny&filterLanguage=english'
+    driver.get(reviews_page)
 
-    # Do not crawl non-store apps, like Source SDK and Spacewar
-    if driver.current_url == 'https://store.steampowered.com/':
+    # Do not proceed if the user was redirected.
+    # This may happen when accessing non-store apps, like Source SDK and Spacewar or dedicated servers.
+    if driver.current_url != reviews_page:
         continue
 
     # Download banner image

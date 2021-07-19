@@ -16,8 +16,10 @@
 		// const regex = new RegExp(app.name, 'gi');
 		// const spoiler = [...Array(Math.floor(Math.random() * (20 - 10 + 1)) + 10)].map(x => '*').join('');
 		// return _.sample(app.reviews).replaceAll(regex, `<span class="spoiler">${spoiler}</span>`);
+		const asdf = _.sample(app.reviews);
+		console.log(asdf);
 
-		return _.sample(app.reviews);
+		return asdf;
 	}
 
 	const getGuessClass = (app: App): string => {
@@ -54,15 +56,13 @@
 	<h4>Guess from which game the Steam review came from!</h4>
 
 	<div class="score-container">
-		<div class="score-bubble">
-			{ score }
-		</div>
+		<div class="score-bubble">{ score }</div>
 	</div>
 
 	<div class="choice-container">
 		{#each apps as app}
 			<div class="choice {hasGuessed && getGuessClass(app)}"on:click={() => onGuess(app)} style="{hasGuessed ? 'pointer-events:none;' : ''}">
-				<img src="banners/{app.appid}_header.jpg" alt="" />
+				<img src="banners/{app.appid}_header.jpg" alt="{app.name} Banner" />
 				<span>{ app.name }</span>
 			</div>
 		{/each}
@@ -74,14 +74,14 @@
 	</div>
 
 	<div class="actions">
-		<a href="https://paypal.com/paypalme/aquelemiguel/1" target="_blank">
-			<img src="icons/paypal.png" alt="PayPal logo" />
+		<a href="https://github.com/aquelemiguel/its-ok-i-guess" target="_blank">
+			<img src="icons/github.png" alt="GitHub logo" />
 		</a>
 		<a href="https://ko-fi/aquelemiguel" target="_blank">
 			<img src="icons/kofi.png" alt="Ko-Fi logo" />
 		</a>
-		<a href="https://github.com/aquelemiguel/its-ok-i-guess" target="_blank">
-			<img src="icons/github.png" alt="GitHub logo" />
+		<a href="https://paypal.com/paypalme/aquelemiguel/1" target="_blank">
+			<img src="icons/paypal.png" alt="PayPal logo" />
 		</a>
 	</div>
 </main>
@@ -89,11 +89,12 @@
 <style>
 	main {
 		display: flex;
+		min-height: 100vh;
 		flex-direction: column;
 		text-align: center;
 		max-width: 1200px;
 		margin: 0 auto;
-		height: 100%;
+		padding: 0 2em 0 2em;
 	}
 
 	h1 {
@@ -177,6 +178,7 @@
 		align-items: center;
 		justify-content: center;
 		flex-grow: 1;
+		height: 100%;
 	}
 
 	.review-container {
@@ -184,7 +186,7 @@
 		flex-direction: column;
 		text-align: left;
 		width: 100%;
-		height: 200px;
+		flex-grow: 1;
 	}
 
 	.big-quotation-mark {
@@ -195,7 +197,7 @@
 
 	.review-body {
 		font-family: 'Motiva Sans Bold';
-		margin: 0 15em 2.5em 2.5em;
+		margin: 0 0 2.5em 2.5em;
 		font-size: 24px;
 	}
 
@@ -203,12 +205,12 @@
 		display: flex;
 		align-items: center;
 		justify-content: flex-end;
-		margin-bottom: 1em;
+		margin-bottom: 2em;
 	}
 
 	.actions img {
 		width: 40px;
-		padding-left: 0.5em;
+		padding-left: 1em;
 		filter: opacity(50%);
 		transition: all .5s ease;
 	}
@@ -216,5 +218,19 @@
 	.actions img:hover {
 		filter: opacity(80%);
 		transition: all .2s ease;
+	}
+	
+	@media only screen and (max-width: 600px) {
+		h1 {
+			font-size: 36px;
+		}
+
+		.choice-container {
+			flex-direction: column;
+		}
+
+		.choice {
+			margin: 1.5em auto 0 auto !important;
+		}
 	}
 </style>
