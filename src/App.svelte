@@ -2,7 +2,6 @@
 	import * as _ from 'lodash';
 	import { onMount } from 'svelte';
 	import * as db from '../models/reviews.json';
-import app from './main';
 
 	type App = {
 		appid: number;
