@@ -27,13 +27,6 @@ import app from './main';
 		return _.sampleSize(data, n);
 	}
 
-	const getRandomReview = (app: App) : Review => {
-		// const regex = new RegExp(app.name, 'gi');
-		// const spoiler = [...Array(Math.floor(Math.random() * (20 - 10 + 1)) + 10)].map(x => '*').join('');
-		// return _.sample(app.reviews).replaceAll(regex, `<span class="spoiler">${spoiler}</span>`);
-		return _.sample(app.reviews);
-	}
-
 	const getGuessClass = (app: App): string => {
 		return app.appid === correct.appid ? 'correct' : 'incorrect';
 	}
@@ -231,7 +224,6 @@ import app from './main';
 		font-family: 'Motiva Sans Bold';
 		grid-row: 2;
 		grid-column: 2;
-		/* margin: 0 0 2.5em 2.5em; */
 		font-size: 24px;
 	}
 
