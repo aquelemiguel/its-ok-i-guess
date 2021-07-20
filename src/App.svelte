@@ -20,7 +20,14 @@
 			...app,
 			reviews: app.reviews as Review[]
 		}));
+
+		const storedHighscore = localStorage.getItem('highscore');
+		highscore = storedHighscore ? parseInt(storedHighscore) : 0;
 	})
+
+	const toggleMute = () => {
+		isMuted = !isMuted;
+	}
 
 	const getRandomApps = (n: number): App[] => {
 		return _.sampleSize(data, n);
@@ -30,27 +37,40 @@
 		return app.appid === correct.appid ? 'correct' : 'incorrect';
 	}
 
+	const generateNewRound = () => {
+		apps = getRandomApps(3);
+		correct = _.sample(apps);
+		review = _.sample(correct.reviews);
+		hasGuessed = false;
+	}
+
 	const onGuess = (guess: App) => {
 		hasGuessed = true;
 
 		if (guess.appid === correct.appid) {
 			score++;
-			new Audio('sfx/correct.mp3').play();
+			highscore = score > highscore ? score : highscore;
+			localStorage.setItem('highscore', highscore.toString());
+
+			isMuted ? '' : new Audio('sfx/correct.mp3').play();
+
+			setTimeout(() => {
+				generateNewRound();
+			}, 1500);
 		}
 		else {
 			score = 0;
-			new Audio('sfx/wrong.mp3').play();
-		}
+			isMuted ? '' : new Audio('sfx/wrong.mp3').play();
 
-		setTimeout(() => {
-			apps = getRandomApps(3);
-			correct = _.sample(apps);
-			review = _.sample(correct.reviews);
-			hasGuessed = false;
-		}, 2000);	
+			setTimeout(() => {
+				generateNewRound();
+			}, 3000);
+		}
 	}
 	
 	let score = 0;
+	let highscore;
+	let isMuted = false;
 	let data: App[] = db['default'];
 	let apps: App[] = getRandomApps(3);
 	let correct: App = _.sample(apps);
@@ -62,8 +82,12 @@
 	<h1>it's ok, i guess</h1>
 	<h4>Guess from which game the Steam review came from!</h4>
 
+	<div class="highscore">{ highscore }</div>
+
 	<div class="score-container">
+		<div></div>
 		<div class="score-bubble">{ score }</div>
+		<img class="mute-button {isMuted ? 'muted' : ''}" src="icons/mute.png" alt="Mute button" on:click={toggleMute} />
 	</div>
 
 	<div class="choice-container">
@@ -77,7 +101,6 @@
 
 	<div class="review-container">
 		<img class="thumb-icon" src="icons/{ review.recommended ? 'thumbs-up.png' : 'thumbs-down.png' }" alt="" />
-		<!-- <span class="big-quotation-mark">“</span> -->
 		<span class="play-time">{ review.play_time } hours on record</span>
 		<span class="review-body">{ review.body }</span>
 	</div>
@@ -121,15 +144,21 @@
 
 	.score-container {
 		display: flex;
-		justify-content: center;
+		align-items: center;
+		justify-content: space-between;
+	}
+
+	.score-container > * {
+		width: 36px;
+		height: 36px;
 	}
 
 	.score-bubble {
 		display: flex;
-		align-items: center;
-		justify-content: center;
 		width: 75px;
 		height: 75px;
+		align-items: center;
+		justify-content: center;
 		background: whitesmoke;
 		border-radius: 50%;
 		font-size: 32px;
@@ -137,10 +166,28 @@
 		color: black;
 	}
 
+	.mute-button {
+		width: 36px;
+		height: 36px;
+		align-self: flex-end;
+		transition: all .2s ease;
+		filter: opacity(25%);
+		cursor: pointer;
+	}
+
+	.mute-button.muted {
+		filter: opacity(100%);
+	}
+
+	.highscore {
+		filter: opacity(25%);
+		margin-bottom: 0.5em;
+	}
+
 	.choice-container {
 		display: flex;
 		justify-content: space-around;
-		margin: 2em 0 1em 0;
+		margin: 1.5em 0 1em 0;
 	}
 
 	.choice {
@@ -208,12 +255,6 @@
 		grid-column: 1;
 	}
 
-	.big-quotation-mark {
-		font-size: 108px;
-		height: 40px;
-		color: #ffffff49;
-	}
-
 	.play-time {
 		color: #ffffff49;
 		grid-row: 1;
@@ -230,14 +271,14 @@
 	.actions {
 		display: flex;
 		align-items: center;
-		justify-content: flex-end;
+		justify-content: center;
 		margin-bottom: 2em;
 	}
 
 	.actions img {
 		width: 40px;
-		padding-left: 1em;
-		filter: opacity(50%);
+		padding: 12px;
+		filter: opacity(25%);
 		transition: all .5s ease;
 	}
 
@@ -257,9 +298,23 @@
 			margin-bottom: 1em;
 		}
 
+		.highscore {
+			margin: 0.25em 0;
+			font-size: 12px;
+		}
+
+		.score-container {
+			margin: 0 1em;
+		}
+
+		.score-container > * {
+			width: 28px;
+			height: 28px;
+		}
+
 		.score-bubble {
-			width: 50px;
-			height: 50px;
+			width: 48px;
+			height: 48px;
 			font-size: 24px;
 		}
 
@@ -275,6 +330,11 @@
 			height: auto;
 		}
 
+		.choice:hover {
+			background: unset;
+			color: unset;
+		}
+
 		.choice > span {
 			height: 50px;
 		}
@@ -284,7 +344,6 @@
 		}
 
 		.actions {
-			justify-content: center;
 			margin-bottom: 1em;
 		}
 
