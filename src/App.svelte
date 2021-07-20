@@ -82,21 +82,22 @@
 	<h1>it's ok, i guess</h1>
 	<h4>Guess from which game the Steam review came from!</h4>
 
-	<div class="highscore">{ highscore }</div>
-
 	<div class="score-container">
-		<div></div>
 		<div class="score-bubble">{ score }</div>
-		<img class="mute-button {isMuted ? 'muted' : ''}" src="icons/mute.png" alt="Mute button" on:click={toggleMute} />
 	</div>
 
-	<div class="choice-container">
+	<div class="highscore">{ highscore }</div>
+
+	<div class="choice-wrapper">
+		<img class="mute-button {isMuted ? 'muted' : ''}" src="icons/mute.png" alt="Mute button" on:click={toggleMute} />
+		<div class="choice-container">
 		{#each apps as app}
 			<div class="choice {hasGuessed && getGuessClass(app)}"on:click={() => onGuess(app)} style="{hasGuessed ? 'pointer-events:none;' : ''}">
 				<img src="banners/{app.appid}_header.jpg" alt="{app.name} Banner" />
 				<span>{ app.name }</span>
 			</div>
 		{/each}
+		</div>
 	</div>
 
 	<div class="review-container">
@@ -104,6 +105,7 @@
 		<span class="play-time">{ review.play_time } hours on record</span>
 		<span class="review-body">{ review.body }</span>
 	</div>
+
 
 	<div class="actions">
 		<a href="https://github.com/aquelemiguel/its-ok-i-guess" target="_blank">
@@ -145,12 +147,7 @@
 	.score-container {
 		display: flex;
 		align-items: center;
-		justify-content: space-between;
-	}
-
-	.score-container > * {
-		width: 36px;
-		height: 36px;
+		justify-content: center;
 	}
 
 	.score-bubble {
@@ -166,28 +163,37 @@
 		color: black;
 	}
 
+	.highscore {
+		filter: opacity(25%);
+		margin-top: 0.5em;
+	}
+
+	.choice-wrapper {
+		display: flex;
+		flex-direction: column;
+		margin: 0.5em 0 0.5em 0;
+	}
+
 	.mute-button {
-		width: 36px;
-		height: 36px;
 		align-self: flex-end;
+		margin-bottom: 0.5em;
+		width: 28px;
+		height: 28px;
 		transition: all .2s ease;
 		filter: opacity(25%);
 		cursor: pointer;
 	}
 
 	.mute-button.muted {
+		width: 28px;
+		height: 28px;
 		filter: opacity(100%);
-	}
-
-	.highscore {
-		filter: opacity(25%);
-		margin-bottom: 0.5em;
 	}
 
 	.choice-container {
 		display: flex;
 		justify-content: space-around;
-		margin: 1.5em 0 1em 0;
+		
 	}
 
 	.choice {
@@ -299,17 +305,12 @@
 		}
 
 		.highscore {
-			margin: 0.25em 0;
+			margin: 0.5em 0;
 			font-size: 12px;
 		}
 
 		.score-container {
 			margin: 0 1em;
-		}
-
-		.score-container > * {
-			width: 28px;
-			height: 28px;
 		}
 
 		.score-bubble {
@@ -324,10 +325,19 @@
 			margin: 0;
 		}
 
+		.mute-button {
+			width: 24px;
+			height: 24px;
+		}
+
 		.choice {
 			width: auto;
 			margin: 1.5em auto 0 auto !important;
 			height: auto;
+		}
+
+		.choice:first-child {
+			margin-top: 0 !important;
 		}
 
 		.choice:hover {
