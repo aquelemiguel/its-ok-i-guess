@@ -42,12 +42,8 @@ for i, appid in enumerate(appids):
     # Do not proceed if the user was redirected.
     # This may happen when accessing non-store apps, like Source SDK and Spacewar or dedicated servers.
     if driver.current_url != reviews_page:
+        print(f'❌ [{i+1}/{len(appids)}] {game.name} ({game.appid})')
         continue
-
-    # Download banner image
-    with open(f'./banners/{appid}_header.jpg', 'wb') as file:
-        res = requests.get(f'https://cdn.akamai.steamstatic.com/steam/apps/{appid}/header.jpg')
-        file.write(res.content)
 
     # Assign appid
     game.appid = appid
@@ -69,6 +65,7 @@ for i, appid in enumerate(appids):
     try:
         game.name = driver.find_element_by_class_name('apphub_AppName').text
     except NoSuchElementException:
+        print(f'❌ [{i+1}/{len(appids)}] {game.name} ({game.appid})')
         continue
 
     # Delete a couple of elements so I can easily extract review text
@@ -91,14 +88,14 @@ for i, appid in enumerate(appids):
     for elem in driver.find_elements_by_class_name('apphub_UserReviewCardContent'):
         review = Review()
 
-        # Filter out reviews that less than 50 people thought were funny
+        # Filter out reviews that less than 150 people thought were funny
         try:
             funny_votes = elem.find_element_by_class_name('found_helpful').text
-            review.funny_votes = int(funny_votes.split('\n')[0].split(' ')[0].replace(',', ''))
+            review.funny_votes = int(funny_votes.split('\n')[1].split(' ')[0].replace(',', ''))
 
-            if review.funny_votes < 100:
+            if review.funny_votes < 150:
                 continue
-        except (NoSuchElementException, ValueError):
+        except Exception:
             continue
 
         body = elem.find_element_by_css_selector('.apphub_CardTextContent').text
@@ -118,13 +115,18 @@ for i, appid in enumerate(appids):
 
         reviews.append(dataclasses.asdict(review))
 
-    if len(reviews) > 0:
+    if len(reviews) >= 3:
         game.reviews = reviews
         db.append(dataclasses.asdict(game))
+        
+        # Download banner image
+        with open(f'./banners/{appid}_header.jpg', 'wb') as file:
+            res = requests.get(f'https://cdn.akamai.steamstatic.com/steam/apps/{appid}/header.jpg')
+            file.write(res.content)
 
-    # Print progress to console
-    # os.system('cls||clear')
-    print(f'[{i+1}/{len(appids)}] {game.name} ({game.appid})')
+        print(f'✔️  [{i+1}/{len(appids)}] {game.name} ({game.appid})')
+    else:
+        print(f'❌ [{i+1}/{len(appids)}] {game.name} ({game.appid})')
 
 driver.close()
 

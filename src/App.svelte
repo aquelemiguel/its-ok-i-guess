@@ -187,6 +187,7 @@
 		align-items: center;
 		justify-content: center;
 		flex-grow: 1;
+		padding: 0 1em;
 	}
 
 	.review-container {
