@@ -134,13 +134,13 @@
 	h1 {
 		font-size: 4em;
 		font-weight: 900;
-		margin: 1.25em 0 0 0;
+		margin: 1em 0 0 0;
 	}
 
 	h4 {
 		font-weight: normal;
 		margin-top: 0.5em;
-		margin-bottom: 4em;
+		margin-bottom: 3em;
 		color: #ffffff4f;
 	}
 
@@ -171,7 +171,6 @@
 	.choice-wrapper {
 		display: flex;
 		flex-direction: column;
-		margin: 0.5em 0 0.5em 0;
 	}
 
 	.mute-button {
@@ -301,11 +300,11 @@
 
 		h4 {
 			font-size: 16px;
-			margin-bottom: 1em;
+			margin-bottom: 1.5em;
 		}
 
 		.highscore {
-			margin: 0.5em 0;
+			margin-top: 0.5em;
 			font-size: 12px;
 		}
 
