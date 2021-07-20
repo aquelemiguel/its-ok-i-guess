@@ -344,6 +344,12 @@
 			color: unset;
 		}
 
+		.choice.correct {
+			transition: all .5s ease;
+			background: whitesmoke;
+			color: #1f2126;
+		}
+
 		.choice > span {
 			height: 50px;
 		}
