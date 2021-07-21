@@ -30,7 +30,7 @@ appids = [app.get_attribute('data-appid') for app in driver.find_elements_by_cla
 
 db = []
 
-Path('images/').mkdir(parents=True, exist_ok=True)
+Path('headers/').mkdir(parents=True, exist_ok=True)
 
 for i, appid in enumerate(appids):
     game = Game()
