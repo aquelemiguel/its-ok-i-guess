@@ -30,7 +30,7 @@ appids = [app.get_attribute('data-appid') for app in driver.find_elements_by_cla
 
 db = []
 
-Path('banners/').mkdir(parents=True, exist_ok=True)
+Path('images/').mkdir(parents=True, exist_ok=True)
 
 for i, appid in enumerate(appids):
     game = Game()
@@ -120,7 +120,7 @@ for i, appid in enumerate(appids):
         db.append(dataclasses.asdict(game))
         
         # Download banner image
-        with open(f'./banners/{appid}_header.jpg', 'wb') as file:
+        with open(f'./headers/{appid}_header.jpg', 'wb') as file:
             res = requests.get(f'https://cdn.akamai.steamstatic.com/steam/apps/{appid}/header.jpg')
             file.write(res.content)
 
