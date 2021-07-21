@@ -93,7 +93,7 @@
 		<div class="choice-container">
 		{#each apps as app}
 			<div class="choice {hasGuessed && getGuessClass(app)}"on:click={() => onGuess(app)} style="{hasGuessed ? 'pointer-events:none;' : ''}">
-				<img src="banners/{app.appid}_header.jpg" alt="{app.name} Banner" />
+				<img src="headers/{app.appid}_header.jpg" alt="{app.name} Banner" />
 				<span>{ app.name }</span>
 			</div>
 		{/each}
