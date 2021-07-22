@@ -1,7 +1,7 @@
 <script lang="ts">
 	import * as _ from 'lodash';
-	import { onMount } from 'svelte';
 	import * as db from '../models/reviews.json';
+	import { onMount } from 'svelte';
 
 	type App = {
 		appid: number;
@@ -80,7 +80,7 @@
 
 <main>
 	<h1>it's ok, i guess</h1>
-	<h4>Guess from which game the Steam review came from!</h4>
+	<h4>Guess the game from the Steam review!</h4>
 
 	<div class="score-container">
 		<div class="score-bubble">{ score }</div>
@@ -299,7 +299,7 @@
 		}
 
 		h4 {
-			font-size: 16px;
+			font-size: 14px;
 			margin-bottom: 1.5em;
 		}
 
